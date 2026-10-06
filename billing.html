@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Restaurant POS and invoice generator" />
+  <title>Restaurant POS | Invoice</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="appSidebar" class="app-sidebar" aria-label="Main navigation">
+  <div class="sidebar-brand">
+    <button class="sidebar-logo" type="button" aria-expanded="true" aria-label="Collapse navigation" title="Collapse navigation">🍽️</button>
+    <div class="sidebar-brand-text">
+      <strong>Restaurant POS</strong>
+      <span>Billing System</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-link" href="dashboard.html"><span class="sidebar-icon">⌂</span><span>Dashboard</span></a>
+    <a class="sidebar-link" href="billing.html"><span class="sidebar-icon">▣</span><span>Billing</span></a>
+    <a class="sidebar-link" href="menu.html"><span class="sidebar-icon">☷</span><span>Menu</span></a>
+    <a class="sidebar-link" href="restaurant-customers.html"><span class="sidebar-icon">◉</span><span>Customers</span></a>
+    <a class="sidebar-link" href="staff.html"><span class="sidebar-icon">♟</span><span>Staff</span></a>
+    <a class="sidebar-link" href="reports.html"><span class="sidebar-icon">▥</span><span>Reports</span></a>
+    <a class="sidebar-link" href="profile.html"><span class="sidebar-icon">●</span><span>Profile / Settings</span></a>
+    <a class="sidebar-link" href="subscription.html"><span class="sidebar-icon">▤</span><span>Subscription</span></a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <span class="sidebar-footer-dot"></span>
+    <span class="sidebar-user">
+      <strong data-restaurant-name>Restaurant</strong>
+      <small data-user-email>Signed in</small>
+    </span>
+    <button class="sidebar-logout" type="button" data-logout title="Logout" aria-label="Logout"><span class="sidebar-logout-icon">↪</span><span class="sidebar-logout-text">Logout</span></button>
+  </div>
+</aside>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">RESTAURANT POS</p>
+        <h1>Restaurant Billing</h1>
+      </div>
+      <div class="topbar-actions">
+        <span id="invoiceNumber" class="invoice-badge"></span>
+        <button class="secondary-btn" id="newBillBtn">New Bill</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="menu-panel">
+        <div class="section-heading">
+          <div><h2>Menu</h2><p>Select an item to add it to the bill.</p></div>
+          <input id="searchInput" class="search-input" type="search" placeholder="Search food..." aria-label="Search food" />
+        </div>
+        <div id="categoryTabs" class="category-tabs"></div>
+        <div id="menuGrid" class="menu-grid"></div>
+      </section>
+
+      <aside class="cart-panel">
+        <div class="cart-header">
+          <div><h2>Current Order</h2><p id="cartCount">0 items</p></div>
+          <button id="clearCartBtn" class="text-btn">Clear</button>
+        </div>
+        <div id="cartItems" class="cart-items"><div class="empty-cart"><div class="empty-icon">🛒</div><strong>Your cart is empty</strong><span>Add food items from the menu.</span></div></div>
+        <div class="bill-summary">
+          <label class="field-label" for="customerName">Customer name <span>(optional)</span></label>
+          <input id="customerName" class="text-input" type="text" placeholder="Walk-in customer" />
+          <div class="summary-row"><span>Subtotal</span><strong id="subtotal">₹0.00</strong></div>
+          <div class="summary-row"><span>Tax (5%)</span><strong id="tax">₹0.00</strong></div>
+          <div class="summary-row total"><span>Total</span><strong id="total">₹0.00</strong></div>
+          <button id="generateInvoiceBtn" class="primary-btn" disabled>Generate Invoice</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="invoiceModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="invoiceTitle">
+    <div class="modal-card">
+      <div class="modal-actions no-print"><button id="closeModalBtn" class="secondary-btn">Close</button><button id="printInvoiceBtn" class="primary-btn">Print Invoice</button></div>
+      <article id="invoice" class="invoice">
+        <div class="invoice-head">
+          <div><p class="eyebrow">RESTAURANT</p><h2 id="invoiceTitle">Hash Cloud Restaurant</h2><p>Quality food • Freshly prepared</p></div>
+          <div class="invoice-meta"><strong id="printInvoiceNumber"></strong><span id="invoiceDate"></span></div>
+        </div>
+        <div class="invoice-customer"><span>Customer</span><strong id="printCustomerName">Walk-in Customer</strong></div>
+        <table><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody id="invoiceLines"></tbody></table>
+        <div class="invoice-total"><div><span>Subtotal</span><strong id="printSubtotal"></strong></div><div><span>Tax (5%)</span><strong id="printTax"></strong></div><div class="grand-total"><span>Total</span><strong id="printTotal"></strong></div></div>
+        <div class="invoice-footer"><strong>Thank you! Visit again.</strong><span>Powered by Restaurant POS</span></div>
+      </article>
+    </div>
+  </div>
+  <script src="auth.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="app.js"></script>
+</body>
