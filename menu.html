@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Restaurant POS menu management" />
+  <title>Restaurant POS | Menu Management</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="appSidebar" class="app-sidebar" aria-label="Main navigation">
+  <div class="sidebar-brand">
+    <button class="sidebar-logo" type="button" aria-expanded="true" aria-label="Collapse navigation" title="Collapse navigation">🍽️</button>
+    <div class="sidebar-brand-text">
+      <strong>Restaurant POS</strong>
+      <span>Billing System</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-link" href="dashboard.html"><span class="sidebar-icon">⌂</span><span>Dashboard</span></a>
+    <a class="sidebar-link" href="billing.html"><span class="sidebar-icon">▣</span><span>Billing</span></a>
+    <a class="sidebar-link" href="menu.html"><span class="sidebar-icon">☷</span><span>Menu</span></a>
+    <a class="sidebar-link" href="restaurant-customers.html"><span class="sidebar-icon">◉</span><span>Customers</span></a>
+    <a class="sidebar-link" href="staff.html"><span class="sidebar-icon">♟</span><span>Staff</span></a>
+    <a class="sidebar-link" href="reports.html"><span class="sidebar-icon">▥</span><span>Reports</span></a>
+    <a class="sidebar-link" href="profile.html"><span class="sidebar-icon">●</span><span>Profile / Settings</span></a>
+    <a class="sidebar-link" href="subscription.html"><span class="sidebar-icon">▤</span><span>Subscription</span></a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <span class="sidebar-footer-dot"></span>
+    <span class="sidebar-user">
+      <strong data-restaurant-name>Restaurant</strong>
+      <small data-user-email>Signed in</small>
+    </span>
+    <button class="sidebar-logout" type="button" data-logout title="Logout" aria-label="Logout"><span class="sidebar-logout-icon">↪</span><span class="sidebar-logout-text">Logout</span></button>
+  </div>
+</aside>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">RESTAURANT POS</p>
+        <h1>Menu Management</h1>
+      </div>
+
+    </header>
+
+    <main class="management-page">
+      <section class="management-panel">
+        <div class="management-header">
+          <div>
+            <h2>Menu Items</h2>
+            <p>Add, edit or remove items available on the billing screen.</p>
+          </div>
+          <button id="addItemBtn" class="primary-btn">+ Add New Item</button>
+        </div>
+
+        <div class="management-toolbar">
+          <input id="menuSearch" class="search-input" type="search" placeholder="Search menu items..." aria-label="Search menu items" />
+          <select id="categoryFilter" class="text-input category-filter" aria-label="Filter by category"></select>
+        </div>
+
+        <div id="menuTable" class="menu-table-wrap"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="itemModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle">
+    <div class="form-card">
+      <div class="modal-form-header">
+        <div>
+          <p class="eyebrow">MENU MANAGEMENT</p>
+          <h2 id="itemModalTitle">Add New Item</h2>
+        </div>
+        <button id="closeItemModalBtn" class="icon-btn" type="button" aria-label="Close">×</button>
+      </div>
+
+      <form id="itemForm">
+        <input id="itemId" type="hidden" />
+        <div class="form-grid">
+          <label>
+            Item name
+            <input id="itemName" class="text-input" type="text" required maxlength="80" placeholder="Chicken Tikka" />
+          </label>
+          <label>
+            Category
+            <input id="itemCategory" class="text-input" type="text" required maxlength="40" list="categoryOptions" placeholder="Starters" />
+          </label>
+          <label>
+            Price (₹)
+            <input id="itemPrice" class="text-input" type="number" required min="0.01" step="0.01" placeholder="180" />
+          </label>
+          <label>
+            Food type
+            <select id="itemFoodType" class="text-input" required>
+              <option value="veg">🟢 Veg</option>
+              <option value="non_veg">🔴 Non-Veg</option>
+            </select>
+          </label>
+        </div>
+        <datalist id="categoryOptions"></datalist>
+
+        <div class="form-actions">
+          <button id="cancelItemBtn" class="secondary-btn" type="button">Cancel</button>
+          <button class="primary-btn" type="submit">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="menu.js"></script>
+</body>
+</html>
