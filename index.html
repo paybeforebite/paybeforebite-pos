@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Restaurant POS | Login</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-page">
+  <main class="login-shell">
+    <section class="login-card">
+      <div class="login-brand">
+        <div class="login-logo">🍽️</div>
+        <div>
+          <p class="eyebrow">RESTAURANT POS</p>
+          <h1>Sign in to your billing system</h1>
+        </div>
+      </div>
+      <p class="login-subtitle">Access your restaurant menu, bills and business dashboard.</p>
+      <form id="loginForm" class="login-form">
+        <label>Email<input id="loginEmail" class="text-input" type="email" autocomplete="email" required></label>
+        <label>Password<input id="loginPassword" class="text-input" type="password" autocomplete="current-password" required></label>
+        <button id="loginButton" class="primary-btn" type="submit">Sign In</button>
+        <p id="loginMessage" class="login-message"></p>
+      </form>
+      <div class="login-links">
+        <a href="forgot-password.html">Forgot password?</a>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
