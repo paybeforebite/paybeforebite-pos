@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Restaurant POS user profile and account security">
+  <title>Restaurant POS | Profile</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="appSidebar" class="app-sidebar" aria-label="Main navigation">
+      <div class="sidebar-brand">
+        <button class="sidebar-logo" type="button" aria-expanded="true" aria-label="Collapse navigation" title="Collapse navigation">🍽️</button>
+        <div class="sidebar-brand-text">
+          <strong>Restaurant POS</strong>
+          <span>Billing System</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+    <a class="sidebar-link" href="dashboard.html"><span class="sidebar-icon">⌂</span><span>Dashboard</span></a>
+    <a class="sidebar-link" href="billing.html"><span class="sidebar-icon">▣</span><span>Billing</span></a>
+    <a class="sidebar-link" href="menu.html"><span class="sidebar-icon">☷</span><span>Menu</span></a>
+    <a class="sidebar-link" href="restaurant-customers.html"><span class="sidebar-icon">◉</span><span>Customers</span></a>
+    <a class="sidebar-link" href="staff.html"><span class="sidebar-icon">♟</span><span>Staff</span></a>
+    <a class="sidebar-link" href="reports.html"><span class="sidebar-icon">▥</span><span>Reports</span></a>
+    <a class="sidebar-link" href="profile.html"><span class="sidebar-icon">●</span><span>Profile / Settings</span></a>
+    <a class="sidebar-link" href="subscription.html"><span class="sidebar-icon">▤</span><span>Subscription</span></a>
+  </nav>
+
+      <div class="sidebar-footer">
+        <span class="sidebar-footer-dot"></span>
+        <span class="sidebar-user">
+          <strong data-restaurant-name>Restaurant</strong>
+          <small data-user-email>Signed in</small>
+        </span>
+        <button class="sidebar-logout" type="button" data-logout title="Logout" aria-label="Logout"><span class="sidebar-logout-icon">↪</span><span class="sidebar-logout-text">Logout</span></button>
+      </div>
+    </aside>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ACCOUNT</p>
+        <h1>Profile & Security</h1>
+      </div>
+    </header>
+
+    <main class="profile-page">
+      <section class="profile-grid">
+        <article class="profile-card profile-summary">
+          <div class="profile-avatar" id="profileAvatar">U</div>
+          <div>
+            <p class="eyebrow">SIGNED-IN USER</p>
+            <h2 id="profileEmail">Loading...</h2>
+            <p id="profileRole" class="profile-muted">Loading role...</p>
+          </div>
+        </article>
+
+        <article class="profile-card">
+          <div class="profile-card-header">
+            <div>
+              <p class="eyebrow">RESTAURANT ACCESS</p>
+              <h2>Restaurant details</h2>
+            </div>
+          </div>
+          <div class="profile-details">
+            <div><span>Restaurant</span><strong id="profileRestaurant">—</strong></div>
+            <div><span>Role</span><strong id="profileRoleDetail">—</strong></div>
+            <div><span>Email</span><strong id="profileEmailDetail">—</strong></div>
+            <div><span>Last sign in</span><strong id="profileLastSignIn">—</strong></div>
+          </div>
+        </article>
+
+        <article class="profile-card profile-security">
+          <div class="profile-card-header">
+            <div>
+              <p class="eyebrow">ACCOUNT SECURITY</p>
+              <h2>Change password</h2>
+              <p>Update the password for your current signed-in account.</p>
+            </div>
+          </div>
+          <form id="changePasswordForm" class="profile-form">
+            <label>New password<input id="profileNewPassword" class="text-input" type="password" autocomplete="new-password" minlength="8" required></label>
+            <label>Confirm new password<input id="profileConfirmPassword" class="text-input" type="password" autocomplete="new-password" minlength="8" required></label>
+            <div class="profile-form-actions">
+              <button id="changePasswordButton" class="primary-btn" type="submit">Update Password</button>
+              <a class="secondary-btn nav-btn" href="forgot-password.html">Forgot password?</a>
+            </div>
+            <p id="profileMessage" class="login-message"></p>
+          </form>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
