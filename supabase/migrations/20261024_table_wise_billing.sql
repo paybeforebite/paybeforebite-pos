@@ -65,6 +65,9 @@ alter table public.restaurant_tables enable row level security;
 alter table public.table_orders enable row level security;
 alter table public.table_order_items enable row level security;
 
+grant select, insert, update, delete on public.restaurant_tables to authenticated;
+grant select on public.table_orders, public.table_order_items to authenticated;
+
 drop policy if exists restaurant_tables_tenant_select on public.restaurant_tables;
 create policy restaurant_tables_tenant_select on public.restaurant_tables
   for select to authenticated using (restaurant_id = public.current_restaurant_id());
@@ -280,7 +283,7 @@ returns void
 language plpgsql
 security definer
 set search_path = public
-as $
+as $func$
 declare
   v_restaurant_id uuid := public.current_restaurant_id();
 begin
@@ -293,14 +296,14 @@ begin
   where id = p_item_id and order_id = p_order_id and restaurant_id = v_restaurant_id;
   if not found then raise exception 'Order item not found.'; end if;
 end;
-$;
+$func$;
 
 create or replace function public.update_pos_order_customer(p_order_id uuid, p_customer_name text)
 returns public.table_orders
 language plpgsql
 security definer
 set search_path = public
-as $
+as $func$
 declare
   v_restaurant_id uuid := public.current_restaurant_id();
   v_order public.table_orders;
@@ -314,7 +317,7 @@ begin
   if not found then raise exception 'Open order not found.'; end if;
   return v_order;
 end;
-$;
+$func$;
 
 -- Business-critical order writes must go through the validated RPCs, not direct table writes.
 revoke insert, update, delete on public.table_orders from authenticated;
