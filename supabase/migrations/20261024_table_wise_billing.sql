@@ -21,7 +21,7 @@ create table if not exists public.table_orders (
   status text not null default 'open' check (status in ('open','paid','cancelled')),
   customer_name text not null default 'Walk-in Customer',
   created_by uuid default auth.uid() references auth.users(id) on delete set null,
-  invoice_id uuid references public.invoices(id) on delete set null,
+  invoice_id bigint references public.invoices(id) on delete set null,
   payment_method text check (payment_method in ('cash','upi','card','other')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
