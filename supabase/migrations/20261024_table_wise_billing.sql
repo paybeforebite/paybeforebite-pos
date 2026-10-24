@@ -275,9 +275,58 @@ begin
 end;
 $$;
 
+create or replace function public.remove_pos_order_item(p_order_id uuid, p_item_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_restaurant_id uuid := public.current_restaurant_id();
+begin
+  if v_restaurant_id is null then raise exception 'Active restaurant membership is required.'; end if;
+  if not exists (
+    select 1 from public.table_orders
+    where id = p_order_id and restaurant_id = v_restaurant_id and status = 'open'
+  ) then raise exception 'Open order not found.'; end if;
+  delete from public.table_order_items
+  where id = p_item_id and order_id = p_order_id and restaurant_id = v_restaurant_id;
+  if not found then raise exception 'Order item not found.'; end if;
+end;
+$;
+
+create or replace function public.update_pos_order_customer(p_order_id uuid, p_customer_name text)
+returns public.table_orders
+language plpgsql
+security definer
+set search_path = public
+as $
+declare
+  v_restaurant_id uuid := public.current_restaurant_id();
+  v_order public.table_orders;
+begin
+  if v_restaurant_id is null then raise exception 'Active restaurant membership is required.'; end if;
+  update public.table_orders
+    set customer_name = coalesce(nullif(trim(p_customer_name), ''), 'Walk-in Customer'),
+        updated_at = now()
+    where id = p_order_id and restaurant_id = v_restaurant_id and status = 'open'
+    returning * into v_order;
+  if not found then raise exception 'Open order not found.'; end if;
+  return v_order;
+end;
+$;
+
+-- Business-critical order writes must go through the validated RPCs, not direct table writes.
+revoke insert, update, delete on public.table_orders from authenticated;
+revoke insert, update, delete on public.table_order_items from authenticated;
+
 revoke all on function public.start_pos_order(text, uuid, text) from public;
 revoke all on function public.add_pos_order_item(uuid, bigint, integer) from public;
 revoke all on function public.settle_pos_order(uuid, text, text) from public;
+revoke all on function public.remove_pos_order_item(uuid, uuid) from public;
+revoke all on function public.update_pos_order_customer(uuid, text) from public;
 grant execute on function public.start_pos_order(text, uuid, text) to authenticated;
 grant execute on function public.add_pos_order_item(uuid, bigint, integer) to authenticated;
 grant execute on function public.settle_pos_order(uuid, text, text) to authenticated;
+grant execute on function public.remove_pos_order_item(uuid, uuid) to authenticated;
+grant execute on function public.update_pos_order_customer(uuid, text) to authenticated;
