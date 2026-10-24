@@ -9,6 +9,7 @@ window.SUPABASE_CLIENT = client;
 const RESTAURANT_PAGES = [
   "dashboard.html",
   "billing.html",
+  "tables.html",
   "menu.html",
   "restaurant-customers.html",
   "staff.html",
