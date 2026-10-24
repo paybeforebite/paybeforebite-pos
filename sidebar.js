@@ -78,6 +78,17 @@ function initSidebar() {
   const isMobile = window.matchMedia("(max-width: 760px)").matches;
   setSidebarState(savedState === null ? !isMobile : savedState === "true");
 
+  const nav = sidebar.querySelector(".sidebar-nav");
+  if (nav && !nav.querySelector('a[href="tables.html"]')) {
+    const billingLink = nav.querySelector('a[href="billing.html"]');
+    const link = document.createElement("a");
+    link.className = "sidebar-link";
+    link.href = "tables.html";
+    link.innerHTML = '<span class="sidebar-icon">▦</span><span>Tables & Orders</span>';
+    if (billingLink) billingLink.insertAdjacentElement("afterend", link);
+    else nav.appendChild(link);
+  }
+
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
   sidebar.querySelectorAll(".sidebar-link").forEach((link) => {
     link.classList.toggle("active", link.getAttribute("href") === currentPage);

@@ -28,7 +28,7 @@ Never put a Supabase secret/service-role key in browser code. Configure secret k
 
 - `index.html`: restaurant sign-in
 - `dashboard.html`: restaurant sales dashboard
-- `billing.html`: invoice creation
+- `billing.html`: invoice creation\n- `tables.html`: dine-in table management, persistent open orders, takeaway billing and receipt printing
 - `menu.html`: restaurant menu
 - `restaurant-customers.html`: restaurant's customer area
 - `staff.html`: restaurant staff area
@@ -37,7 +37,7 @@ Never put a Supabase secret/service-role key in browser code. Configure secret k
 - `subscription.html`: restaurant's subscription information
 - `forgot-password.html` and `update-password.html`: account recovery
 
-## Security notes
+## Table-wise billing setup\n\nBefore using the Tables & Orders page, review and apply `supabase/migrations/20261024_table_wise_billing.sql` in the Supabase SQL Editor. The migration creates restaurant-scoped tables and open orders, enables RLS, and adds database functions for validated menu-item pricing and invoice settlement. Do not apply it without reviewing it for your existing database.\n\n## Security notes
 
 - Protected pages require a signed-in user with an active `restaurant_members` row.
 - Owner/admin-only pages are additionally restricted by the UI to `owner` and `admin` roles.
