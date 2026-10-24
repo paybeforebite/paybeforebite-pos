@@ -196,7 +196,7 @@ async function removeOrderItem(itemId) {
   if (!currentOrder || busy || !confirm("Remove this item from the open order?")) return;
   setBusy(true);
   try {
-    await runQuery(db.from("table_order_items").delete().eq("id", itemId).eq("order_id", currentOrder.id).eq("restaurant_id", window.RESTAURANT_ID));
+    await runQuery(db.rpc("remove_pos_order_item", { p_order_id: currentOrder.id, p_item_id: itemId }));
     await loadOrderItems();
     renderOrder();
   } catch (error) {
@@ -211,8 +211,8 @@ async function saveOpenOrder() {
   setBusy(true);
   try {
     const customerName = $("customerName").value.trim() || "Walk-in Customer";
-    const updated = await runQuery(db.from("table_orders").update({ customer_name: customerName, updated_at: new Date().toISOString() }).eq("id", currentOrder.id).eq("restaurant_id", window.RESTAURANT_ID).select().single());
-    currentOrder = updated;
+    const updated = await runQuery(db.rpc("update_pos_order_customer", { p_order_id: currentOrder.id, p_customer_name: customerName }));
+    currentOrder = Array.isArray(updated) ? updated[0] : updated;
     await loadAll();
     renderOrder();
     notify("Open order saved. You can continue it later.");
@@ -236,7 +236,7 @@ async function settleOrder() {
   clearNotice();
   try {
     const customerName = $("customerName").value.trim() || "Walk-in Customer";
-    await runQuery(db.from("table_orders").update({ customer_name: customerName, updated_at: new Date().toISOString() }).eq("id", currentOrder.id).eq("restaurant_id", window.RESTAURANT_ID));
+    await runQuery(db.rpc("update_pos_order_customer", { p_order_id: currentOrder.id, p_customer_name: customerName }));
     const data = await runQuery(db.rpc("settle_pos_order", {
       p_order_id: currentOrder.id,
       p_invoice_number: invoiceNumber(),
